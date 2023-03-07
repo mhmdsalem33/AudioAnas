@@ -2,8 +2,14 @@ package com.mhmd.audioanas
 
 import AudioAdapter
 import android.media.AudioManager
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.view.View
+import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mhmd.audioanas.databinding.ActivityMainBinding
@@ -13,6 +19,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
     private lateinit var audioAdapter: AudioAdapter
+
+    private var mediaPlayer: MediaPlayer? = null
+    private var playingPosition = -1
+    private var seekBarHandler: Handler? = null
+    private var isResume = false
+    private var resumePosition = 0
 
     private val ayat = listOf(
         Audio("1" ,     "https://verse.mp3quran.net/arabic/ibrahim_alakhdar/32/001001.mp3"),
@@ -62,4 +74,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
+
 }

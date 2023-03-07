@@ -35,6 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:max="100"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </LinearLayout>

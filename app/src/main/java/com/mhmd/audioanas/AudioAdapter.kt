@@ -1,8 +1,6 @@
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +9,11 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mhmd.audioanas.Audio
+
 import com.mhmd.audioanas.R
 
+
+// old code
 class AudioAdapter(private val audioList: List<Audio>) :
     RecyclerView.Adapter<AudioAdapter.AudioViewHolder>() {
 
@@ -34,6 +35,9 @@ class AudioAdapter(private val audioList: List<Audio>) :
         holder.textViewUrl.text = audio.url
 
         holder.buttonPlay.setOnClickListener {
+            AudioPlayer.playAudio(audio.url , holder , position)
+
+            /*
             if (mediaPlayer != null) {
                 mediaPlayer!!.stop()
                 mediaPlayer!!.release()
@@ -41,9 +45,6 @@ class AudioAdapter(private val audioList: List<Audio>) :
                 notifyItemChanged(playingPosition)
                 playingPosition = -1
             }
-
-
-
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setDataSource(audio.url)
             mediaPlayer!!.prepareAsync()
@@ -67,7 +68,6 @@ class AudioAdapter(private val audioList: List<Audio>) :
                     holder.buttonStop.isEnabled = false
                     playingPosition = -1
                 }
-
                 holder.seekBar.setOnSeekBarChangeListener(object :
                     SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -75,12 +75,8 @@ class AudioAdapter(private val audioList: List<Audio>) :
                             mediaPlayer!!.seekTo(progress)
                         }
                     }
-
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    }
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                    override fun onStopTrackingTouch(seekBar: SeekBar?){}
                 })
                 seekBarHandler = Handler(Looper.getMainLooper())
                 seekBarHandler?.post(object : Runnable {
@@ -97,10 +93,22 @@ class AudioAdapter(private val audioList: List<Audio>) :
                     }
                 })
             }
+
+
+
+             */
+
+
+
+
+
+
+
         }
 
-
         holder.buttonStop.setOnClickListener {
+            AudioPlayer.pauseAudio()
+            /*
             if (mediaPlayer != null) {
                 mediaPlayer!!.pause()
                 resumePosition = mediaPlayer!!.currentPosition
@@ -115,8 +123,15 @@ class AudioAdapter(private val audioList: List<Audio>) :
                 seekBarHandler?.removeCallbacksAndMessages(null)
                 seekBarHandler = null
             }
+
+
+             */
         }
 
+
+
+
+        /*
         if (playingPosition == position) {
             holder.seekBar.visibility = View.VISIBLE
             holder.buttonPlay.isEnabled = false
@@ -126,6 +141,10 @@ class AudioAdapter(private val audioList: List<Audio>) :
             holder.buttonPlay.isEnabled = true
             holder.buttonStop.isEnabled = false
         }
+
+         */
+
+
     }
 
     override fun getItemCount(): Int {
@@ -140,3 +159,9 @@ class AudioAdapter(private val audioList: List<Audio>) :
         val seekBar: SeekBar = itemView.findViewById(R.id.seekBar)
     }
 }
+
+
+
+
+
+
