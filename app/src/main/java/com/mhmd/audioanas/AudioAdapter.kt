@@ -19,6 +19,8 @@ class AudioAdapter(private val audioList: List<Audio>) :
     private var mediaPlayer: MediaPlayer? = null
     private var playingPosition = -1
     private var seekBarHandler: Handler? = null
+    private var isResume = false
+    private var resumePosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudioViewHolder {
         val itemView =
@@ -44,7 +46,13 @@ class AudioAdapter(private val audioList: List<Audio>) :
             mediaPlayer!!.setDataSource(audio.url)
             mediaPlayer!!.prepareAsync()
             mediaPlayer!!.setOnPreparedListener {
-                mediaPlayer!!.start()
+                if (isResume) {
+                    mediaPlayer!!.seekTo(resumePosition)
+                    isResume = false
+
+                } else {
+                    mediaPlayer!!.start()
+                }
                 holder.seekBar.visibility = View.VISIBLE
                 holder.seekBar.max = mediaPlayer!!.duration
                 holder.buttonPlay.isEnabled = false
@@ -72,32 +80,39 @@ class AudioAdapter(private val audioList: List<Audio>) :
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     }
                 })
-                Thread {
-                    while (mediaPlayer != null) {
+                seekBarHandler = Handler(Looper.getMainLooper())
+                seekBarHandler?.post(object : Runnable {
+                    override fun run() {
                         try {
                             val currentPosition = mediaPlayer?.currentPosition
                             if (currentPosition != null) {
                                 holder.seekBar.progress = currentPosition
                             }
-                            //Thread.sleep(1000)
+                            seekBarHandler?.postDelayed(this, 1000)
                         } catch (e: Exception) {
-                           Log.d("testApp" , e.message.toString())
+                            Log.d("testApp", e.message.toString())
                         }
                     }
-                }.start()
+                })
             }
         }
 
+
         holder.buttonStop.setOnClickListener {
-            mediaPlayer!!.stop()
-            mediaPlayer!!.release()
-            mediaPlayer = null
-            holder.seekBar.visibility = View.GONE
-            holder.buttonPlay.isEnabled = true
-            holder.buttonStop.isEnabled = false
-            playingPosition = -1
-            seekBarHandler?.removeCallbacksAndMessages(null)
-            seekBarHandler = null
+            if (mediaPlayer != null) {
+                mediaPlayer!!.pause()
+                resumePosition = mediaPlayer!!.currentPosition
+                isResume = true
+                mediaPlayer!!.stop()
+                mediaPlayer!!.release()
+                mediaPlayer = null
+                holder.seekBar.visibility = View.GONE
+                holder.buttonPlay.isEnabled = true
+                holder.buttonStop.isEnabled = false
+                playingPosition = -1
+                seekBarHandler?.removeCallbacksAndMessages(null)
+                seekBarHandler = null
+            }
         }
 
         if (playingPosition == position) {
