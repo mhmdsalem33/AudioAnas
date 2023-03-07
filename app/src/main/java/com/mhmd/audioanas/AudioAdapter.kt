@@ -42,6 +42,8 @@ class AudioAdapter(private val audioList: List<Audio>) :
                 playingPosition = -1
             }
 
+
+
             mediaPlayer = MediaPlayer()
             mediaPlayer!!.setDataSource(audio.url)
             mediaPlayer!!.prepareAsync()
@@ -49,7 +51,7 @@ class AudioAdapter(private val audioList: List<Audio>) :
                 if (isResume) {
                     mediaPlayer!!.seekTo(resumePosition)
                     isResume = false
-
+                    mediaPlayer!!.start()
                 } else {
                     mediaPlayer!!.start()
                 }
