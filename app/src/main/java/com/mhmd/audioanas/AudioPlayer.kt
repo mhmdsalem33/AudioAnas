@@ -13,7 +13,13 @@ object AudioPlayer {
     private var isResume       = false
     private var resumePosition = 0
 
-    fun playAudio(audioUrl: String, holder: AudioAdapter.AudioViewHolder, position: Int) {
+
+
+    /*
+    fun playAudio(
+        audioUrl: String,
+        holder: AudioAdapter.AudioViewHolder,
+        ) {
         if (mediaPlayer != null && mediaPlayer!!.isPlaying) {
             mediaPlayer!!.stop()
             mediaPlayer!!.release()
@@ -34,24 +40,18 @@ object AudioPlayer {
                 mediaPlayer!!.start()
             }
 
-            holder.seekBar.visibility = View.VISIBLE
-            holder.seekBar.max = mediaPlayer!!.duration
-            holder.buttonPlay.isEnabled = true
-            holder.buttonStop.isEnabled = true
-            playingPosition = position
+            holder.binding.seekBar.max = mediaPlayer!!.duration
 
             mediaPlayer!!.setOnCompletionListener {
-                holder.seekBar.visibility = View.GONE
-                holder.buttonPlay.isEnabled = true
-                holder.buttonStop.isEnabled = false
                 playingPosition = -1
                 mediaPlayer!!.release()
                 mediaPlayer = null
                 seekBarHandler?.removeCallbacksAndMessages(null)
                 seekBarHandler = null
+                holder.binding.seekBar.progress = 0
             }
 
-            holder.seekBar.setOnSeekBarChangeListener(object :
+            holder.binding.seekBar.setOnSeekBarChangeListener(object :
                 SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                     if (fromUser) {
@@ -59,7 +59,9 @@ object AudioPlayer {
                     }
                 }
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar?){}
+                override fun onStopTrackingTouch(seekBar: SeekBar?){
+
+                }
             })
             seekBarHandler = Handler(Looper.getMainLooper())
             seekBarHandler?.post(object : Runnable {
@@ -67,7 +69,7 @@ object AudioPlayer {
                     try {
                         val currentPosition = mediaPlayer?.currentPosition
                         if (currentPosition != null) {
-                            holder.seekBar.progress = currentPosition
+                            holder.binding.seekBar.progress = currentPosition
                         }
                         seekBarHandler?.postDelayed(this, 1000)
                     } catch (e: Exception) {
@@ -77,6 +79,71 @@ object AudioPlayer {
             })
         }
     }
+
+    */
+    fun playAudio(
+        audioUrl: String,
+        holder: AudioAdapter.AudioViewHolder
+    ) {
+        if (mediaPlayer != null && mediaPlayer!!.isPlaying) {
+            mediaPlayer!!.stop()
+            mediaPlayer!!.release()
+            mediaPlayer = null
+            seekBarHandler?.removeCallbacksAndMessages(null)
+            seekBarHandler = null
+            playingPosition = -1
+        }
+        mediaPlayer = MediaPlayer()
+        mediaPlayer!!.setDataSource(audioUrl)
+        mediaPlayer!!.prepareAsync()
+        mediaPlayer!!.setOnPreparedListener {
+            holder.binding.seekBar.max = mediaPlayer!!.duration
+            mediaPlayer!!.start()
+            seekBarHandler = Handler(Looper.getMainLooper())
+            seekBarHandler!!.post(object : Runnable {
+                override fun run() {
+                    try {
+                        val currentPosition = mediaPlayer!!.currentPosition
+                        if (currentPosition != null) {
+                            holder.binding.seekBar.progress = currentPosition
+                        }
+                        seekBarHandler!!.postDelayed(this, 1000)
+                    } catch (e: Exception) {
+                        Log.d("testApp", e.message.toString())
+                    }
+                }
+            })
+            mediaPlayer!!.setOnCompletionListener {
+                playingPosition = -1
+                mediaPlayer!!.release()
+                mediaPlayer = null
+                seekBarHandler?.removeCallbacksAndMessages(null)
+                seekBarHandler = null
+                holder.binding.seekBar.progress = 0
+            }
+        }
+        holder.binding.seekBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    mediaPlayer?.seekTo(progress)
+                } else {
+                    val currentPosition = mediaPlayer?.currentPosition
+                    if (currentPosition != null) {
+                        holder.binding.seekBar.progress = currentPosition
+                    }
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+    }
+
+
+
+
 
     fun pauseAudio() {
         if (mediaPlayer != null) {
