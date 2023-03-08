@@ -8,17 +8,18 @@ import android.widget.SeekBar
 object AudioPlayer {
 
     private var mediaPlayer: MediaPlayer? = null
-    private var playingPosition = -1
-    private var seekBarHandler: Handler? = null
-    private var isResume = false
+    private var playingPosition           = -1
+    private var seekBarHandler: Handler?  = null
+    private var isResume       = false
     private var resumePosition = 0
 
     fun playAudio(audioUrl: String, holder: AudioAdapter.AudioViewHolder, position: Int) {
-
-        if (mediaPlayer != null) {
+        if (mediaPlayer != null && mediaPlayer!!.isPlaying) {
             mediaPlayer!!.stop()
             mediaPlayer!!.release()
-            mediaPlayer = null
+            mediaPlayer   = null
+            seekBarHandler?.removeCallbacksAndMessages(null)
+            seekBarHandler  = null
             playingPosition = -1
         }
         mediaPlayer = MediaPlayer()
@@ -32,6 +33,7 @@ object AudioPlayer {
             } else {
                 mediaPlayer!!.start()
             }
+
             holder.seekBar.visibility = View.VISIBLE
             holder.seekBar.max = mediaPlayer!!.duration
             holder.buttonPlay.isEnabled = true
@@ -43,7 +45,12 @@ object AudioPlayer {
                 holder.buttonPlay.isEnabled = true
                 holder.buttonStop.isEnabled = false
                 playingPosition = -1
+                mediaPlayer!!.release()
+                mediaPlayer = null
+                seekBarHandler?.removeCallbacksAndMessages(null)
+                seekBarHandler = null
             }
+
             holder.seekBar.setOnSeekBarChangeListener(object :
                 SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -89,15 +96,9 @@ object AudioPlayer {
         return mediaPlayer != null && mediaPlayer!!.isPlaying
     }
 
-    fun getCurrentPosition(): Int {
-        return mediaPlayer?.currentPosition ?: 0
-    }
+    fun getCurrentPosition() = mediaPlayer?.currentPosition ?: 0
 
-    fun getDuration(): Int {
-        return mediaPlayer?.duration ?: 0
-    }
+    fun getDuration() =  mediaPlayer?.duration ?: 0
 
-    fun seekTo(position: Int) {
-        mediaPlayer?.seekTo(position)
-    }
+    fun seekTo(position: Int) =  mediaPlayer?.seekTo(position)
 }
