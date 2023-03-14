@@ -10,24 +10,25 @@
         android:id="@+id/second"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <SeekBar
+        <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/seekBar"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:paddingStart="@dimen/_8sdp"
-            android:max="100"
             android:layout_weight="1"
             android:paddingEnd="@dimen/_8sdp"
+            tools:ignore="NestedWeights"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/timer_start" />
+
 
         <TextView
             android:id="@+id/timer_start"
@@ -143,10 +144,8 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-
                     />
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1"
@@ -157,8 +156,6 @@
                     app:layout_constraintStart_toStartOf="@id/ayaa"
                     app:layout_constraintEnd_toEndOf="@id/ayaa"
                     />
-
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -168,7 +165,6 @@
                     app:layout_constraintBottom_toBottomOf="@+id/ayaa"
                     app:layout_constraintEnd_toStartOf="@+id/start"
                     android:layout_marginEnd="@dimen/_10sdp"
-
                         />
 
                 <ImageView

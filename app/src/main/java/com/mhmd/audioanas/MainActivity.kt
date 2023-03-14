@@ -17,13 +17,13 @@ import com.mhmd.audioanas.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
 
-    private lateinit var binding : ActivityMainBinding
-    private lateinit var audioAdapter: AudioAdapter
+    private lateinit var binding      : ActivityMainBinding
+    private lateinit var audioAdapter : AudioAdapter
 
-    private var mediaPlayer: MediaPlayer? = null
+    private var mediaPlayer    : MediaPlayer? = null
     private var playingPosition = -1
-    private var seekBarHandler: Handler? = null
-    private var isResume = false
+    private var seekBarHandler : Handler? = null
+    private var isResume       = false
     private var resumePosition = 0
 
     private val ayat = listOf(
@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
         Audio("الثناء على الله بصفاته التي كلُّها أوصاف كمال, وبنعمه الظاهرة والباطنة، الدينية والدنيوية، وفي ضمنه أَمْرٌ لعباده أن يحمدوه, فهو المستحق له وحده, وهو سبحانه المنشئ للخلق, القائم بأمورهم, المربي لجميع خلقه بنعمه, ولأوليائه بالإيمان والعمل الصالح." ,     "https://verse.mp3quran.net/arabic/ibrahim_alakhdar/32/001003.mp3", false),
         Audio("الثناء على الله بصفاته التي كلُّها أوصاف كمال, وبنعمه الظاهرة والباطنة، الدينية والدنيوية، وفي ضمنه أَمْرٌ لعباده أن يحمدوه, فهو المستحق له وحده, وهو سبحانه المنشئ للخلق, القائم بأمورهم, المربي لجميع خلقه بنعمه, ولأوليائه بالإيمان والعمل الصالح." ,     "https://verse.mp3quran.net/arabic/ibrahim_alakhdar/32/001004.mp3" , false),
         Audio("الثناء على الله بصفاته التي كلُّها أوصاف كمال, وبنعمه الظاهرة والباطنة، الدينية والدنيوية، وفي ضمنه أَمْرٌ لعباده أن يحمدوه, فهو المستحق له وحده, وهو سبحانه المنشئ للخلق, القائم بأمورهم, المربي لجميع خلقه بنعمه, ولأوليائه بالإيمان والعمل الصالح." ,     "https://verse.mp3quran.net/arabic/ibrahim_alakhdar/32/001005.mp3" , false),
-        Audio("الثناء على الله بصفاته التي كلُّها أوصاف كمال, وبنعمه الظاهرة والباطنة، الدينية والدنيوية، وفي ضمنه أَمْرٌ لعباده أن يحمدوه, فهو المستحق له وحده, وهو سبحانه المنشئ للخلق, القائم بأمورهم, المربي لجميع خلقه بنعمه, ولأوليائه بالإيمان والعمل الصالح." ,     "https://verse.mp3quran.net/arabic/ibrahim_alakhdar/32/001006.mp3" , false),
-        Audio("الثناء على الله بصفاته التي كلُّها أوصاف كمال, وبنعمه الظاهرة والباطنة، الدينية والدنيوية، وفي ضمنه أَمْرٌ لعباده أن يحمدوه, فهو المستحق له وحده, وهو سبحانه المنشئ للخلق, القائم بأمورهم, المربي لجميع خلقه بنعمه, ولأوليائه بالإيمان والعمل الصالح." ,     "https://verse.mp3quran.net/arabic/ibrahim_alakhdar/32/001007.mp3" , false),
+        Audio("الثناء على الله بصفاته التي كلُّها أوصاف كمال, وبنعمه الظاهرة والباطنة، الدينية والدنيوية، وفي ضمنه أَمْرٌ لعباده أن يحمدوه, فهو المستحق له وحده, وهو سبحانه المنشئ للخلق, القائم بأمورهم, المربي لجميع خلقه بنعمه, ولأوليائه بالإيمان والعمل الصالح." ,     "https://verse.mp3quran.net/arabic/ibrahim_alakhdar/32/001005.mp3" , false),
+        Audio("الثناء على الله بصفاته التي كلُّها أوصاف كمال, وبنعمه الظاهرة والباطنة، الدينية والدنيوية، وفي ضمنه أَمْرٌ لعباده أن يحمدوه, فهو المستحق له وحده, وهو سبحانه المنشئ للخلق, القائم بأمورهم, المربي لجميع خلقه بنعمه, ولأوليائه بالإيمان والعمل الصالح." ,     "https://verse.mp3quran.net/arabic/ibrahim_alakhdar/32/001005.mp3" , false),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,17 +41,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         audioAdapter = AudioAdapter(ayat)
 
         binding.audioRecView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity , RecyclerView.VERTICAL , false)
             adapter = audioAdapter
         }
-
-
-
-
     }
 
 
